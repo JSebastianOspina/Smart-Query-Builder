@@ -1,0 +1,17 @@
+{
+    "name": "u15280500267/smart-query-builder",
+    "description": "Easy Query Builder for php",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Sebastian Ospina",
+            "email": "sebastianospinacontacto@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Ospina\\SmartQueryBuilder\\": "src/"
+        }
+    }
+}

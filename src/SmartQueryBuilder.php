@@ -17,6 +17,9 @@ class SmartQueryBuilder
     //Update
     private $isUpdate = false;
     private $updateStatement = '';
+    //Insert
+    private $isInsert = false;
+    private $insertStatement = '';
 
     /**
      * @param $table
@@ -73,6 +76,28 @@ class SmartQueryBuilder
             $this->updateStatement .= "$key = $column, ";
         }
         return $this;
+    }
+
+    public function insert(array $columns): SmartQueryBuilder
+    {
+        $this->isInsert = true;
+        $this->insertStatement = "INSERT INTO $this->table (";
+        foreach ($columns as $key => $column) {
+            if ($key === array_key_last($columns)) {
+                $this->insertStatement .= "$key) ";
+            } else {
+                $this->insertStatement .= "$key, ";
+            }
+        }
+        $this->insertStatement .= "VALUES (";
+        foreach ($columns as $key => $column) {
+            if ($key === array_key_last($columns)) {
+                $this->insertStatement .= "$column)";
+            } else {
+                $this->insertStatement .= "$column, ";
+            }
+        }
+        return $this;
 
     }
 
@@ -86,6 +111,12 @@ class SmartQueryBuilder
             $this->query = $query;
         } else if ($this->isUpdate) {
             $query = $this->updateStatement
+                . ' WHERE ' . $this->filtersString
+                //extra
+                . ';';
+            $this->query = $query;
+        } else if ($this->isInsert) {
+            $query = $this->insertStatement
                 . ' WHERE ' . $this->filtersString
                 //extra
                 . ';';

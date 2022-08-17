@@ -92,9 +92,9 @@ class SmartQueryBuilder
         $this->insertStatement .= "VALUES (";
         foreach ($columns as $key => $column) {
             if ($key === array_key_last($columns)) {
-                $this->insertStatement .= "$column)";
+                $this->insertStatement .= "'$column')";
             } else {
-                $this->insertStatement .= "$column, ";
+                $this->insertStatement .= "'$column', ";
             }
         }
         return $this;

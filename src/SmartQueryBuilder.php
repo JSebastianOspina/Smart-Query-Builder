@@ -116,10 +116,7 @@ class SmartQueryBuilder
                 . ';';
             $this->query = $query;
         } else if ($this->isInsert) {
-            $query = $this->insertStatement
-                . ' WHERE ' . $this->filtersString
-                //extra
-                . ';';
+            $query = $this->insertStatement;
             $this->query = $query;
         } else {
             $query = null;

@@ -62,8 +62,21 @@ class SmartQueryBuilder
 
     public function where($column, $operator, $value): SmartQueryBuilder
     {
+
         $string = "$column $operator $value";
         $this->filtersString .= " AND $string";
+        return $this;
+    }
+
+    public function isNull($var): SmartQueryBuilder
+    {
+        $this->filtersString .= " AND $var IS NULL";
+        return $this;
+    }
+
+    public function isNotNull($var): SmartQueryBuilder
+    {
+        $this->filtersString .= " AND $var IS NOT NULL";
         return $this;
     }
 

@@ -9,6 +9,8 @@ $smartQueryBuilder = SmartQueryBuilder::table('form_answers')
         '*'
     ])
     ->where(1, '=', 1)
+    ->isNull('name')
+    ->isNotNull('last_name')
     ->limit(4, 4);
 
 echo nl2br($smartQueryBuilder->getQuery()."\n");
@@ -23,6 +25,8 @@ $smartQueryBuilder = SmartQueryBuilder::table('roles')
     ])
     ->where('name', '=', 'pepe')
     ->where('name', '>', 'algo')
+    ->isNotNull('name')
+    ->isNotNull('last_name')
     ->limit(10);
 
 echo nl2br($smartQueryBuilder->getQuery()."\n");

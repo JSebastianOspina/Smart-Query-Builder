@@ -4,14 +4,14 @@ use Ospina\SmartQueryBuilder\SmartQueryBuilder;
 
 require './src/SmartQueryBuilder.php';
 
-$smartQueryBuilder = SmartQueryBuilder::table('roles')
-->select([
-    'campo1','campo2','campo3'
-])
-    ->where(1,'=',1)
-    ->where('name','>','algo');
+$smartQueryBuilder = SmartQueryBuilder::table('form_answers')
+    ->select([
+        '*'
+    ])
+    ->where(1, '=', 1)
+    ->limit(4, 4);
 
-echo $smartQueryBuilder->getQuery();
+echo nl2br($smartQueryBuilder->getQuery()."\n");
 
 
 $smartQueryBuilder = SmartQueryBuilder::table('roles')
@@ -21,10 +21,11 @@ $smartQueryBuilder = SmartQueryBuilder::table('roles')
         'campo3' => 'Nuevo valor2',
 
     ])
-    ->where(1,'=',1)
-    ->where('name','>','algo');
+    ->where(1, '=', 1)
+    ->where('name', '>', 'algo')
+    ->limit(10);
 
-echo $smartQueryBuilder->getQuery();
+echo nl2br($smartQueryBuilder->getQuery()."\n");
 
 
 $smartQueryBuilder = SmartQueryBuilder::table('roles')
@@ -34,7 +35,7 @@ $smartQueryBuilder = SmartQueryBuilder::table('roles')
         'campo3' => 'Nuevo valor2',
 
     ])
-    ->where(1,'=',1)
-    ->where('name','>','algo');
+    ->where(1, '=', 1)
+    ->where('name', '>', 'algo');
 
-echo $smartQueryBuilder->getQuery();
+echo nl2br($smartQueryBuilder->getQuery()."\n");

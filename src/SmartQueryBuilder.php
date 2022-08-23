@@ -21,6 +21,10 @@ class SmartQueryBuilder
     private $isInsert = false;
     private $insertStatement = '';
 
+    //Limit
+    private $hasLimit = false;
+    private $limitStatement = '';
+
     /**
      * @param $table
      */
@@ -30,16 +34,16 @@ class SmartQueryBuilder
 
         //Clear query's strings
         $this->fieldsString = '';
-        $this->filtersString = '';
+        $this->filtersString = 'WHERE 1 = 1';
     }
 
-    public static function table($tableName)
+    public static function table($tableName): SmartQueryBuilder
     {
         return new SmartQueryBuilder($tableName);
     }
 
 
-    public function select(array $fields)
+    public function select(array $fields): SmartQueryBuilder
     {
         $this->isSelect = true;
 
@@ -56,19 +60,14 @@ class SmartQueryBuilder
     }
 
 
-    public function where($column, $operator, $value)
+    public function where($column, $operator, $value): SmartQueryBuilder
     {
         $string = "$column $operator $value";
-
-        if ($this->filtersString === '') {
-            $this->filtersString .= $string;
-        } else {
-            $this->filtersString .= " AND $string";
-        }
+        $this->filtersString .= " AND $string";
         return $this;
     }
 
-    public function update(array $columns)
+    public function update(array $columns): SmartQueryBuilder
     {
         $this->isUpdate = true;
         $this->updateStatement = "UPDATE $this->table SET ";
@@ -98,31 +97,43 @@ class SmartQueryBuilder
             }
         }
         return $this;
-
     }
 
-    public function getQuery()
+    /**
+     * @throws \Exception
+     */
+    public function limit(int $limit, int $offset = 0): SmartQueryBuilder
+    {
+        if ($limit < 0) {
+            throw new \RuntimeException('You must specify a limit value greather than 0');
+        }
+        $this->hasLimit = true;
+        $this->limitStatement = "LIMIT $offset,$limit";
+        return $this;
+    }
+
+    public function getQuery(): ?string
     {
         if ($this->isSelect) {
             $query = $this->selectStatement
-                . ' WHERE ' . $this->filtersString
-                //extra
-                . ';';
-            $this->query = $query;
+                . ' WHERE ' . $this->filtersString;
+            //extra
         } else if ($this->isUpdate) {
             $query = $this->updateStatement
-                . ' WHERE ' . $this->filtersString
-                //extra
-                . ';';
-            $this->query = $query;
+                . ' WHERE ' . $this->filtersString;
+            //extra
         } else if ($this->isInsert) {
             $query = $this->insertStatement;
-            $this->query = $query;
         } else {
-            $query = null;
+            throw new \RuntimeException('You must specify at least one SQl statement');
         }
 
-        return $query;
+        //Add clauses
+        if ($this->hasLimit) {
+            $query .= " $this->limitStatement";
+        }
+        $this->query = $query . ';'; //Ending query
+        return $this->query;
     }
 
 

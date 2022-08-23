@@ -21,7 +21,7 @@ $smartQueryBuilder = SmartQueryBuilder::table('roles')
         'campo3' => 'Nuevo valor2',
 
     ])
-    ->where(1, '=', 1)
+    ->where('name', '=', 'pepe')
     ->where('name', '>', 'algo')
     ->limit(10);
 

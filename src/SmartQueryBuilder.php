@@ -34,7 +34,7 @@ class SmartQueryBuilder
 
         //Clear query's strings
         $this->fieldsString = '';
-        $this->filtersString = 'WHERE 1 = 1';
+        $this->filtersString = '1 = 1';
     }
 
     public static function table($tableName): SmartQueryBuilder

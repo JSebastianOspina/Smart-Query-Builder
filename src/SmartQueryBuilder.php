@@ -72,7 +72,12 @@ class SmartQueryBuilder
         $this->isUpdate = true;
         $this->updateStatement = "UPDATE $this->table SET ";
         foreach ($columns as $key => $column) {
-            $this->updateStatement .= "$key = $column, ";
+
+            if ($key === array_key_last($columns)) {
+                $this->updateStatement .= "$key = $column ";
+            } else {
+                $this->updateStatement .= "$key = $column, ";
+            }
         }
         return $this;
     }

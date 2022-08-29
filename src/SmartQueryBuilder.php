@@ -62,8 +62,11 @@ class SmartQueryBuilder
 
     public function where($column, $operator, $value): SmartQueryBuilder
     {
-
-        $string = "$column $operator $value";
+        if (is_int($value) || is_bool($value)) {
+            $string = "$column $operator $value";
+        } else {
+            $string = "$column $operator '$value'";
+        }
         $this->filtersString .= " AND $string";
         return $this;
     }
